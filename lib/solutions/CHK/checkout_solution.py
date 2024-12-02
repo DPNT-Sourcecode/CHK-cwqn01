@@ -1,5 +1,5 @@
 def checkout(skus):
-    # Price table and special offers
+    # Price table and offers (simplified representation using dictionaries)
     price_table = {
         "A": {"price": 50, "offers": [(3, 130), (5, 200)]},
         "B": {"price": 30, "offers": [(2, 45)]},
@@ -28,10 +28,6 @@ def checkout(skus):
         "Y": {"price": 10},  # No offers
         "Z": {"price": 50},  # No offers
     }
-
-    # Validate input (non-alphabetical characters or invalid SKU should return -1)
-    # if not isinstance(skus, str) or not skus.isalpha():
-    #     return -1  # Return -1 for illegal input
 
     # If basket is empty, return 0
     if skus == "":
@@ -78,9 +74,7 @@ def checkout(skus):
 
         # If no offers apply, simply add the regular price (items without "offers" or "special_offer")
         if "offers" not in price_table[sku] and "special_offer" not in price_table[sku]:
-            total_price = count * price_table[sku]["price"]
+            total_price += count * price_table[sku]["price"]
 
     return total_price
-
-
 
