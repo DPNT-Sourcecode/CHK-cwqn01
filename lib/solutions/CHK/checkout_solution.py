@@ -1,87 +1,83 @@
 def checkout(skus):
-    """
-    Calculates the total cost of a basket of items based on the provided special offers.
-
-    Args:
-        skus (str): A string containing the stock-keeping units (SKUs) of the items in the basket.
-
-    Returns:
-        int: The total cost of the basket, or -1 if the input contains any illegal items.
-    """
-    # Split the input string into individual items
-    item_list = list(skus)
-
-    # Initialize the total cost to 0
-    total_cost = 0
-
-    # Initialize counters for each item
-    item_count = [0] * 26
-
-    # Count the occurrences of each item
-    for item in item_list:
-        index = ord(item) - ord('A')
-        if index < 0 or index >= 26:
-            return -1  # Illegal item
-        item_count[index] += 1
-
-    # Calculate the total cost
-    for i, count in enumerate(item_count):
-        if count > 0:
-            item = chr(i + ord('A'))
-            total_cost += get_offer_price(item, count)
-
-    return total_cost
-
-
-def get_offer_price(item, count):
-    """
-    Calculates the cost of an item based on the provided special offers.
-
-    Args:
-        item (str): The stock-keeping unit (SKU) of the item.
-        count (int): The number of the item in the basket.
-
-    Returns:
-        int: The total cost of the item after applying any special offers.
-    """
+    # Price table and special offers
     price_table = {
-        'A': (50, 130, 200),
-        'B': (30, 45, 0),
-        'C': (20, 0, 0),
-        'D': (15, 0, 0),
-        'E': (40, 0, 40),
-        'F': (10, 10, 0),
-        'G': (20, 0, 0),
-        'H': (10, 45, 80),
-        'I': (35, 0, 0),
-        'J': (60, 0, 0),
-        'K': (80, 150, 0),
-        'L': (90, 0, 0),
-        'M': (15, 0, 15),
-        'N': (40, 40, 0),
-        'O': (10, 0, 0),
-        'P': (50, 200, 0),
-        'Q': (30, 80, 0),
-        'R': (50, 50, 0),
-        'S': (30, 0, 0),
-        'T': (20, 0, 0),
-        'U': (40, 40, 0),
-        'V': (50, 90, 130),
-        'W': (20, 0, 0),
-        'X': (90, 0, 0),
-        'Y': (10, 0, 0),
-        'Z': (50, 0, 0)
+        "A": {"price": 50, "offers": [(3, 130), (5, 200)]},
+        "B": {"price": 30, "offers": [(2, 45)]},
+        "C": {"price": 20},
+        "D": {"price": 15},
+        "E": {"price": 40, "special_offer": {"requires": 2, "free_item": "B", "free_count": 1}},
+        "F": {"price": 10, "special_offer": {"requires": 3, "free_item": "F", "free_count": 1}},
+        "G": {"price": 20},
+        "H": {"price": 10, "offers": [(5, 45), (10, 80)]},
+        "I": {"price": 35},
+        "J": {"price": 60},
+        "K": {"price": 80, "offers": [(2, 150)]},
+        "L": {"price": 90},
+        "M": {"price": 15},
+        "N": {"price": 40, "special_offer": {"requires": 3, "free_item": "M", "free_count": 1}},
+        "O": {"price": 10},
+        "P": {"price": 50, "offers": [(5, 200)]},
+        "Q": {"price": 30, "offers": [(3, 80)]},
+        "R": {"price": 50, "special_offer": {"requires": 3, "free_item": "Q", "free_count": 1}},
+        "S": {"price": 30},
+        "T": {"price": 20},
+        "U": {"price": 40, "special_offer": {"requires": 4, "free_item": "U", "free_count": 1}},
+        "V": {"price": 50, "offers": [(3, 130), (2, 90)]},
+        "W": {"price": 20},
+        "X": {"price": 90},
+        "Y": {"price": 10},
+        "Z": {"price": 50},
     }
 
-    price, offer1, offer2 = price_table[item]
+    # Validate input
+    if not isinstance(skus, str):
+        return -1  # Return -1 for illegal input
+    if skus == "":
+        return 0  # Empty input returns 0
 
-    if offer1 > 0 and count >= 3:
-        full_offers = count // 3
-        remainder = count % 3
-        return full_offers * offer1 + remainder * price
-    elif offer2 > 0 and count >= 5:
-        full_offers = count // 5
-        remainder = count % 5
-        return full_offers * offer2 + remainder * price
-    else:
-        return count * price
+    # Count occurrences of each SKU
+    item_counts = {}
+    for sku in skus:
+        if sku not in price_table:
+            return -1  # Return -1 for illegal SKUs
+        item_counts[sku] = item_counts.get(sku, 0) + 1
+
+    # Calculate total price
+    total_price = 0
+    free_items = {}
+
+    # Step 1: Handle free item offers (e.g., "2E get one B free", "3N get one M free")
+    for sku, count in item_counts.items():
+        if sku in price_table and "special_offer" in price_table[sku]:
+            special_offer = price_table[sku]["special_offer"]
+            if count >= special_offer["requires"]:
+                qualifying_sets = count / special_offer["requires"]
+                free_item = special_offer["free_item"]
+                free_count = special_offer["free_count"]
+
+                # Add free items to the free_items dictionary
+                free_items[free_item] = free_items.get(free_item, 0) + qualifying_sets * free_count
+
+    # Step 2: Calculate price for items and apply multi-buy offers
+    for sku, count in item_counts.items():
+        # Apply special offer first if free items are involved
+        if sku in free_items:
+            free_count = free_items[sku]
+            count -= min(count, free_count)  # Deduct the free items
+
+        # Apply multi-buy offers if available
+        if "offers" in price_table[sku]:
+            for offer_quantity, offer_price in sorted(price_table[sku]["offers"], key=lambda x: -x[0]):
+                if count >= offer_quantity:
+                    total_price += (count / offer_quantity) * offer_price
+                    count %= offer_quantity  # Remaining items after offer
+
+        # Add the remaining items at regular price
+        total_price += count * price_table[sku]["price"]
+
+    # Handle regular items without special offers (like G, H, I, etc.)
+    for sku, count in item_counts.items():
+        if "offers" not in price_table[sku]:  # For items without special offers
+            total_price += count * price_table[sku]["price"]
+
+    return total_price
