@@ -51,7 +51,7 @@ def checkout(skus):
         if sku in price_table and "special_offer" in price_table[sku]:
             special_offer = price_table[sku]["special_offer"]
             if count >= special_offer["requires"]:
-                qualifying_sets = count / special_offer["requires"]
+                qualifying_sets = count // special_offer["requires"]
                 free_item = special_offer["free_item"]
                 free_count = special_offer["free_count"]
 
@@ -69,7 +69,7 @@ def checkout(skus):
         if "offers" in price_table[sku]:
             for offer_quantity, offer_price in sorted(price_table[sku]["offers"], key=lambda x: -x[0]):
                 if count >= offer_quantity:
-                    total_price += (count / offer_quantity) * offer_price
+                    total_price += (count // offer_quantity) * offer_price
                     count %= offer_quantity  # Remaining items after offer
 
         # Add the remaining items at regular price
@@ -81,3 +81,4 @@ def checkout(skus):
             total_price += count * price_table[sku]["price"]
 
     return total_price
+
