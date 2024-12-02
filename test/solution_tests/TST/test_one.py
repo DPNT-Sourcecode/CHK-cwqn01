@@ -1,7 +1,8 @@
-from lib.solutions.TST import one
+from lib.solutions.TST.one import get
 
 
 class TestSum():
     def test_sum(self):
-        assert one.get() == 1
+        assert get() == 1
+
 
