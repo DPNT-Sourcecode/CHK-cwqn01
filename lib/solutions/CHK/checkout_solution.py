@@ -29,15 +29,12 @@ def checkout(skus):
         "Z": {"price": 50},  # No offers
     }
 
-
-
-    if skus == "":
-        return 0  # Empty input returns 0
-
     # # Validate input (non-alphabetical characters or invalid SKU should return -1)
     # if not isinstance(skus, str) or not skus.isalpha():
     #     return -1  # Return -1 for illegal input
 
+    if skus == "":
+        return 0  # Empty input returns 0
 
     # Count occurrences of each SKU
     item_counts = {}
@@ -78,9 +75,10 @@ def checkout(skus):
         # Add the remaining items at regular price
         total_price += count * price_table[sku]["price"]
 
-        # If no offers apply, simply add the regular price
+        # If no offers apply, simply add the regular price (items without "offers" or "special_offer")
         if "offers" not in price_table[sku] and "special_offer" not in price_table[sku]:
             total_price += count * price_table[sku]["price"]
 
     return total_price
+
 
