@@ -50,12 +50,13 @@ def checkout(skus):
     for sku, count in item_counts.items():
         if sku in price_table and "special_offer" in price_table[sku]:
             special_offer = price_table[sku]["special_offer"]
-            qualifying_sets = count // special_offer["requires"]
-            free_item = special_offer["free_item"]
-            free_count = special_offer["free_count"]
+            if count >= special_offer["requires"]:
+                qualifying_sets = count // special_offer["requires"]
+                free_item = special_offer["free_item"]
+                free_count = special_offer["free_count"]
 
-            # Add free items to the free_items dictionary
-            free_items[free_item] = free_items.get(free_item, 0) + qualifying_sets * free_count
+                # Add free items to the free_items dictionary
+                free_items[free_item] = free_items.get(free_item, 0) + qualifying_sets * free_count
 
     # Step 2: Calculate price for items and apply multi-buy offers
     for sku, count in item_counts.items():
@@ -80,6 +81,3 @@ def checkout(skus):
             total_price += count * price_table[sku]["price"]
 
     return total_price
-
-
-
