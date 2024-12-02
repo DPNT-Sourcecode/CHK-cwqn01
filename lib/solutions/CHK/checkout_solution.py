@@ -75,5 +75,11 @@ def checkout(skus):
         # Add remaining items at their regular price
         total_price += count * price_table[sku]["price"]
 
+    # Step 3: Handle items with no special offers (like G, H, I)
+    for sku, count in item_counts.items():
+        # Handle regular items without special offers
+        if sku not in price_table[sku].get("offers", []):
+            total_price += count * price_table[sku]["price"]
+
     return total_price
 
