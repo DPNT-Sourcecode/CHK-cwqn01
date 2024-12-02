@@ -8,6 +8,7 @@ def checkout(skus):
         "C": {"price": 20},
         "D": {"price": 15},
         "E": {"price": 40, "special_offer": {"requires": 2, "free_item": "B", "free_count": 1}},
+        "F": {"price": 10, "special_offer": {"requires": 3, "free_item": "F", "free_count": 1}},  # New F offer
     }
 
     # Validate input
@@ -27,7 +28,7 @@ def checkout(skus):
     total_price = 0
     free_items = {}
 
-    # Step 1: Handle free item offers (e.g., "2E get one B free")
+    # Step 1: Handle free item offers (e.g., "2E get one B free", "2F get one F free")
     for sku, count in item_counts.items():
         if sku in price_table and "special_offer" in price_table[sku]:
             special_offer = price_table[sku]["special_offer"]
