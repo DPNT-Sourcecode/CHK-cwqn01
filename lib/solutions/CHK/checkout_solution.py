@@ -12,8 +12,10 @@ def checkout(skus):
     }
 
     # Validate input
-    if not isinstance(skus, str) or not skus.isalpha():
+    if not isinstance(skus, str):
         return -1  # Return -1 for illegal input
+    if skus == "":  # If input is an empty string, return 0
+        return 0
 
     # Count the occurrences of each SKU
     item_counts = {}
