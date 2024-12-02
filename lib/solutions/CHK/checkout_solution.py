@@ -30,8 +30,9 @@ def checkout(skus):
     }
 
     # Validate input
-    if not isinstance(skus, str):
+    if not isinstance(skus, str) or not skus.isalpha():  # Only letters allowed
         return -1  # Return -1 for illegal input
+
     if skus == "":
         return 0  # Empty input returns 0
 
@@ -46,7 +47,7 @@ def checkout(skus):
     total_price = 0
     free_items = {}
 
-    # Step 1: Handle free item offers (e.g., "2E get one B free", "3N get one M free")
+    # Step 1: Handle special offers (e.g., "2E get one B free", "3N get one M free")
     for sku, count in item_counts.items():
         if sku in price_table and "special_offer" in price_table[sku]:
             special_offer = price_table[sku]["special_offer"]
@@ -58,9 +59,9 @@ def checkout(skus):
                 # Add free items to the free_items dictionary
                 free_items[free_item] = free_items.get(free_item, 0) + qualifying_sets * free_count
 
-    # Step 2: Calculate price for items and apply multi-buy offers
+    # Step 2: Calculate price for items and apply multi-buy offers or just the price if no offers
     for sku, count in item_counts.items():
-        # Apply special offer first if free items are involved
+        # If there are free items, reduce the count
         if sku in free_items:
             free_count = free_items[sku]
             count -= min(count, free_count)  # Deduct the free items
@@ -75,9 +76,8 @@ def checkout(skus):
         # Add the remaining items at regular price
         total_price += count * price_table[sku]["price"]
 
-    # Handle regular items without special offers (like G, H, I, etc.)
-    for sku, count in item_counts.items():
-        if "offers" not in price_table[sku]:  # For items without special offers
+        # If no offers apply, simply add the regular price
+        if "offers" not in price_table[sku] and "special_offer" not in price_table[sku]:
             total_price += count * price_table[sku]["price"]
 
     return total_price
