@@ -3,30 +3,30 @@ def checkout(skus):
     price_table = {
         "A": {"price": 50, "offers": [(3, 130), (5, 200)]},
         "B": {"price": 30, "offers": [(2, 45)]},
-        "C": {"price": 20},
-        "D": {"price": 15},
+        "C": {"price": 20},  # No offers
+        "D": {"price": 15},  # No offers
         "E": {"price": 40, "special_offer": {"requires": 2, "free_item": "B", "free_count": 1}},
         "F": {"price": 10, "special_offer": {"requires": 3, "free_item": "F", "free_count": 1}},
-        "G": {"price": 20},
+        "G": {"price": 20},  # No offers
         "H": {"price": 10, "offers": [(5, 45), (10, 80)]},
-        "I": {"price": 35},
-        "J": {"price": 60},
+        "I": {"price": 35},  # No offers
+        "J": {"price": 60},  # No offers
         "K": {"price": 80, "offers": [(2, 150)]},
-        "L": {"price": 90},
-        "M": {"price": 15},
+        "L": {"price": 90},  # No offers
+        "M": {"price": 15},  # No offers
         "N": {"price": 40, "special_offer": {"requires": 3, "free_item": "M", "free_count": 1}},
-        "O": {"price": 10},
+        "O": {"price": 10},  # No offers
         "P": {"price": 50, "offers": [(5, 200)]},
         "Q": {"price": 30, "offers": [(3, 80)]},
         "R": {"price": 50, "special_offer": {"requires": 3, "free_item": "Q", "free_count": 1}},
-        "S": {"price": 30},
-        "T": {"price": 20},
+        "S": {"price": 30},  # No offers
+        "T": {"price": 20},  # No offers
         "U": {"price": 40, "special_offer": {"requires": 4, "free_item": "U", "free_count": 1}},
         "V": {"price": 50, "offers": [(3, 130), (2, 90)]},
-        "W": {"price": 20},
-        "X": {"price": 90},
-        "Y": {"price": 10},
-        "Z": {"price": 50},
+        "W": {"price": 20},  # No offers
+        "X": {"price": 90},  # No offers
+        "Y": {"price": 10},  # No offers
+        "Z": {"price": 50},  # No offers
     }
 
     # Validate input
@@ -81,4 +81,5 @@ def checkout(skus):
             total_price += count * price_table[sku]["price"]
 
     return total_price
+
 
