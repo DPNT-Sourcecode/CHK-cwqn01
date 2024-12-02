@@ -69,8 +69,10 @@ def checkout(skus):
         # Apply multi-buy offers if available
         if "offers" in price_table[sku]:
             for offer_quantity, offer_price in sorted(price_table[sku]["offers"], key=lambda x: -x[0]):
-                total_price += (count // offer_quantity) * offer_price
-                count %= offer_quantity
+                # Apply the offer only if enough items are present to qualify
+                if count >= offer_quantity:
+                    total_price += (count // offer_quantity) * offer_price
+                    count %= offer_quantity
 
         # Add remaining items at their regular price
         total_price += count * price_table[sku]["price"]
@@ -82,4 +84,5 @@ def checkout(skus):
             total_price += count * price_table[sku]["price"]
 
     return total_price
+
 
