@@ -60,6 +60,10 @@ def checkout(skus):
 
     # Step 2: Calculate price for items and apply multi-buy offers or just the price if no offers
     for sku, count in item_counts.items():
+        # If no offers apply, simply add the regular price (items without "offers" or "special_offer")
+        if "offers" not in price_table[sku] and "special_offer" not in price_table[sku]:
+            total_price += count * price_table[sku]["price"]
+
         # If there are free items, reduce the count
         if sku in free_items:
             free_count = free_items[sku]
@@ -75,9 +79,7 @@ def checkout(skus):
         # Add the remaining items at regular price
         total_price += count * price_table[sku]["price"]
 
-        # If no offers apply, simply add the regular price (items without "offers" or "special_offer")
-        if "offers" not in price_table[sku] and "special_offer" not in price_table[sku]:
-            total_price += count * price_table[sku]["price"]
+
 
     return total_price
 
