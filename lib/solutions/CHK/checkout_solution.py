@@ -5,10 +5,11 @@
 def checkout(skus):
     # Price table and special offers
     price_table = {
-        "A": {"price": 50, "offer_quantity": 3, "offer_price": 130},
-        "B": {"price": 30, "offer_quantity": 2, "offer_price": 45},
+        "A": {"price": 50, "offers": [(3, 130), (5, 200)]},
+        "B": {"price": 30, "offers": [(2, 45)]},
         "C": {"price": 20},
-        "D": {"price": 15}
+        "D": {"price": 15},
+        "E": {"price": 40, "special_offer": {"requires": 2, "free_item": "B", "free_count": 1}},
     }
 
     # Validate input
@@ -26,18 +27,35 @@ def checkout(skus):
 
     # Calculate total price
     total_price = 0
+    # Handle items with special offers
     for sku, count in item_counts.items():
-        item_price = price_table[sku]["price"]
-        if "offer_quantity" in price_table[sku]:
-            offer_quantity = price_table[sku]["offer_quantity"]
-            offer_price = price_table[sku]["offer_price"]
+        item_info = price_table[sku]
+        item_price = item_info["price"]
 
-            # Apply special offers
-            total_price += (count // offer_quantity) * offer_price
-            total_price += (count % offer_quantity) * item_price
-        else:
-            # No special offer, calculate based on individual price
-            total_price += count * item_price
+        if "offers" in item_info:
+            # Apply multi-priced offers
+            for offer_quantity, offer_price in sorted(item_info["offers"], key=lambda x: -x[0]):
+                total_price += (count // offer_quantity) * offer_price
+                count %= offer_quantity
+
+        if "special_offer" in item_info:
+            # Apply special offer for E (e.g., "2E get one B free")
+            special_offer = item_info["special_offer"]
+            free_item = special_offer["free_item"]
+            free_count = special_offer["free_count"]
+            qualifying_sets = count // special_offer["requires"]
+
+            # Reduce the required number of free items from the total count of the free item
+            if free_item in item_counts:
+                free_items_to_deduct = min(item_counts[free_item], qualifying_sets * free_count)
+                item_counts[free_item] -= free_items_to_deduct
+
+        # Add remaining items at regular price
+        total_price += count * item_price
+
+    # Calculate remaining items with no special offers
+    for sku, count in item_counts.items():
+        total_price += count * price_table[sku]["price"]
 
     return total_price
 
