@@ -33,7 +33,7 @@ def load_properties(filepath, sep='=', comment_char='#'):
                     key_value = l.split(sep)
                     key = key_value[0].strip()
                     value = sep.join(key_value[1:]).strip().strip('"')
-                    value = value.replace("\\=", "=")
+                    value = value.replace("\=", "=")
                     if value in ['true', 'false']:
                         value = value == 'true'
                     props[key] = value
@@ -41,4 +41,3 @@ def load_properties(filepath, sep='=', comment_char='#'):
     except IOError as e:
         print('ERROR: You need to download the credentials.config file before you can run this.')
         exit(1)
-
