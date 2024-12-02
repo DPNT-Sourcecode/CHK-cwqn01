@@ -30,8 +30,8 @@ def checkout(skus):
     }
 
     # Validate input (non-alphabetical characters or invalid SKU should return -1)
-    if not isinstance(skus, str) or not skus.isalpha():
-        return -1  # Return -1 for illegal input
+    # if not isinstance(skus, str) or not skus.isalpha():
+    #     return -1  # Return -1 for illegal input
 
     if skus == "":
         return 0  # Empty input returns 0
@@ -80,6 +80,3 @@ def checkout(skus):
             total_price += count * price_table[sku]["price"]
 
     return total_price
-
-
-
