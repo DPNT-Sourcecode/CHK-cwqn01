@@ -77,9 +77,6 @@ def checkout(skus):
 
         # If no offers apply, simply add the regular price (items without "offers" or "special_offer")
         if "offers" not in price_table[sku] and "special_offer" not in price_table[sku]:
-            total_price = count * price_table[sku]["price"]
+            total_price += count * price_table[sku]["price"]
 
     return total_price
-
-
-
