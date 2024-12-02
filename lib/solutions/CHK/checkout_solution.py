@@ -1,14 +1,34 @@
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
-    # Price table with multi-buy and free item offers
+    # Price table and special offers
     price_table = {
         "A": {"price": 50, "offers": [(5, 200), (3, 130)]},
         "B": {"price": 30, "offers": [(2, 45)]},
         "C": {"price": 20},
         "D": {"price": 15},
         "E": {"price": 40, "special_offer": {"requires": 2, "free_item": "B", "free_count": 1}},
-        "F": {"price": 10, "special_offer": {"requires": 3, "free_item": "F", "free_count": 1}},  # New F offer
+        "F": {"price": 10, "special_offer": {"requires": 3, "free_item": "F", "free_count": 1}},
+        "G": {"price": 20},
+        "H": {"price": 10, "offers": [(10, 80), (5, 45)]},
+        "I": {"price": 35},
+        "J": {"price": 60},
+        "K": {"price": 80, "offers": [(2, 150)]},
+        "L": {"price": 90},
+        "M": {"price": 15},
+        "N": {"price": 40, "special_offer": {"requires": 3, "free_item": "M", "free_count": 1}},
+        "O": {"price": 10},
+        "P": {"price": 50, "offers": [(5, 200)]},
+        "Q": {"price": 30, "offers": [(3, 80)]},
+        "R": {"price": 50, "special_offer": {"requires": 3, "free_item": "Q", "free_count": 1}},
+        "S": {"price": 30},
+        "T": {"price": 20},
+        "U": {"price": 40, "special_offer": {"requires": 4, "free_item": "U", "free_count": 1}},
+        "V": {"price": 50, "offers": [(3, 130), (2, 90)]},
+        "W": {"price": 20},
+        "X": {"price": 90},
+        "Y": {"price": 10},
+        "Z": {"price": 50},
     }
 
     # Validate input
@@ -28,7 +48,7 @@ def checkout(skus):
     total_price = 0
     free_items = {}
 
-    # Step 1: Handle free item offers (e.g., "2E get one B free", "2F get one F free")
+    # Step 1: Handle free item offers (e.g., "2E get one B free", "3N get one M free")
     for sku, count in item_counts.items():
         if sku in price_table and "special_offer" in price_table[sku]:
             special_offer = price_table[sku]["special_offer"]
@@ -56,3 +76,4 @@ def checkout(skus):
         total_price += count * price_table[sku]["price"]
 
     return total_price
+
