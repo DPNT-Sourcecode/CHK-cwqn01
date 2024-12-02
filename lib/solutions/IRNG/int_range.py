@@ -6,4 +6,3 @@ def generate(start, end):
         raise ValueError("Start must be less than or equal to end.")
 
     return list(range(start, end + 1))
-

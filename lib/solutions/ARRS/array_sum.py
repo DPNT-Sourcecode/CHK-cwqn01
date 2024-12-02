@@ -9,4 +9,3 @@ def compute(int_array):
 
     # Compute the sum of the array
     return sum(int_array)
-

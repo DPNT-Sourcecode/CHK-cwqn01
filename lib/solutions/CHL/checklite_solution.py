@@ -9,4 +9,3 @@ def checklite(skus):
         raise ValueError("Input must contain only alphabetic characters.")
 
     return f"Validated input: {skus}"
-

@@ -5,4 +5,3 @@ def compute(x, y):
         return x + y
     else:
         raise ValueError("Both inputs must be numbers (int or float).")
-
