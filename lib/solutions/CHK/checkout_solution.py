@@ -1,5 +1,3 @@
-
-
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
@@ -27,19 +25,20 @@ def checkout(skus):
 
     # Calculate total price
     total_price = 0
-    # Handle items with special offers
+
+    # Process each item
     for sku, count in item_counts.items():
         item_info = price_table[sku]
         item_price = item_info["price"]
 
+        # Apply special offers
         if "offers" in item_info:
-            # Apply multi-priced offers
             for offer_quantity, offer_price in sorted(item_info["offers"], key=lambda x: -x[0]):
                 total_price += (count // offer_quantity) * offer_price
                 count %= offer_quantity
 
-        if "special_offer" in item_info:
-            # Apply special offer for E (e.g., "2E get one B free")
+        # Handle "2E get one B free"
+        if sku == "E" and "special_offer" in item_info:
             special_offer = item_info["special_offer"]
             free_item = special_offer["free_item"]
             free_count = special_offer["free_count"]
@@ -52,10 +51,6 @@ def checkout(skus):
 
         # Add remaining items at regular price
         total_price += count * item_price
-
-    # Calculate remaining items with no special offers
-    for sku, count in item_counts.items():
-        total_price += count * price_table[sku]["price"]
 
     return total_price
 
