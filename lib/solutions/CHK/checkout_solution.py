@@ -1,5 +1,3 @@
-# noinspection PyUnusedLocal
-# skus = unicode string
 def checkout(skus):
     # Price table and special offers
     price_table = {
@@ -82,5 +80,6 @@ def checkout(skus):
             total_price += count * price_table[sku]["price"]
 
     return total_price
+
 
 
