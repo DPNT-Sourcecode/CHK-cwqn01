@@ -29,8 +29,8 @@ def checkout(skus):
         "Z": {"price": 50},  # No offers
     }
 
-    # Validate input
-    if not isinstance(skus, str) or not skus.isalpha():  # Only letters allowed
+    # Validate input (non-alphabetical characters or invalid SKU should return -1)
+    if not isinstance(skus, str) or not skus.isalpha():
         return -1  # Return -1 for illegal input
 
     if skus == "":
@@ -40,10 +40,9 @@ def checkout(skus):
     item_counts = {}
     for sku in skus:
         if sku not in price_table:
-            return -1  # Return -1 for illegal SKUs
+            return -1  # Return -1 for invalid SKU
         item_counts[sku] = item_counts.get(sku, 0) + 1
 
-    # Calculate total price
     total_price = 0
     free_items = {}
 
@@ -81,5 +80,6 @@ def checkout(skus):
             total_price += count * price_table[sku]["price"]
 
     return total_price
+
 
 
