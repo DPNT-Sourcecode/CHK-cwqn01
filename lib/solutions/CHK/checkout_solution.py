@@ -29,12 +29,15 @@ def checkout(skus):
         "Z": {"price": 50},  # No offers
     }
 
-    # Validate input (non-alphabetical characters or invalid SKU should return -1)
-    # if not isinstance(skus, str) or not skus.isalpha():
-    #     return -1  # Return -1 for illegal input
+
 
     if skus == "":
         return 0  # Empty input returns 0
+
+    # Validate input (non-alphabetical characters or invalid SKU should return -1)
+    if not isinstance(skus, str) or not skus.isalpha():
+        return -1  # Return -1 for illegal input
+
 
     # Count occurrences of each SKU
     item_counts = {}
