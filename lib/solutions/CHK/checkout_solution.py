@@ -76,9 +76,10 @@ def checkout(skus):
         if "offers" not in price_table[sku] and "special_offer" not in price_table[sku]:
             if count == 1:
                 total_price = price_table[sku]["price"]
-            total_price += count * price_table[sku]["price"]
+        total_price += count * price_table[sku]["price"]
 
     return total_price
+
 
 
 
