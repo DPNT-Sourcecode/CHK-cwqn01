@@ -33,8 +33,9 @@ def checkout(skus):
     # if not isinstance(skus, str) or not skus.isalpha():
     #     return -1  # Return -1 for illegal input
 
+    # If basket is empty, return 0
     if skus == "":
-        return 0  # Empty input returns 0
+        return 0
 
     # Count occurrences of each SKU
     item_counts = {}
@@ -65,7 +66,7 @@ def checkout(skus):
             free_count = free_items[sku]
             count -= min(count, free_count)  # Deduct the free items
 
-        # Apply multi-buy offers if available
+        # Handle items with offers (multi-buy offers)
         if "offers" in price_table[sku]:
             for offer_quantity, offer_price in sorted(price_table[sku]["offers"], key=lambda x: -x[0]):
                 if count >= offer_quantity:
