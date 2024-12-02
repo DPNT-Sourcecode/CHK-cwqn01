@@ -6,4 +6,5 @@ def hello(friend_name):
     if not friend_name.isalpha():
         raise ValueError("Input must contain only alphabetic characters (including Unicode letters).")
 
-    return f"Hello, {friend_name}!"
+    return f"Hello, world"
+
