@@ -6,7 +6,7 @@ def checkout(skus):
         "C": {"price": 20},  # No offers
         "D": {"price": 15},  # No offers
         "E": {"price": 40, "special_offer": {"requires": 2, "free_item": "B", "free_count": 1}},
-        "F": {"price": 10, "special_offer": {"requires": 3, "free_item": "F", "free_count": 1}},
+        "F": {"price": 10, "special_offer": {"requires": 2, "free_item": "F", "free_count": 1}},
         "G": {"price": 20},  # No offers
         "H": {"price": 10, "offers": [(5, 45), (10, 80)]},
         "I": {"price": 35},  # No offers
@@ -28,10 +28,6 @@ def checkout(skus):
         "Y": {"price": 10},  # No offers
         "Z": {"price": 50},  # No offers
     }
-
-    # Validate input (non-alphabetical characters or invalid SKU should return -1)
-    # if not isinstance(skus, str) or not skus.isalpha():
-    #     return -1  # Return -1 for illegal input
 
     # If basket is empty, return 0
     if skus == "":
@@ -78,7 +74,7 @@ def checkout(skus):
 
         # If no offers apply, simply add the regular price (items without "offers" or "special_offer")
         if "offers" not in price_table[sku] and "special_offer" not in price_table[sku]:
-            total_price = count * price_table[sku]["price"]
+            total_price += count * price_table[sku]["price"]
 
     return total_price
 
